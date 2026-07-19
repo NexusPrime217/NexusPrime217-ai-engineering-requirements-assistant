@@ -9,4 +9,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String)
     password = Column(String)
-    role = Column(Enum(Roles),nullable=False)
+    email = Column(String, unique=True)
+    created_at = Column(String)
+    updated_at = Column(String)
+    role = Column(Enum(Roles),nullable=False, default=Roles.USER)
