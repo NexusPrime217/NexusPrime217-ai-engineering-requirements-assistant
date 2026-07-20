@@ -13,10 +13,12 @@ def _hash_password(password : str):
 
 
 def register_user(user:UserCreate,db:Session):
-    if db.query(userDB).filter(userDB == user.email).first():
+    if db.query(userDB).filter(userDB.email == user.email).first():
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             detail="email is already registered")
-
+    if db.query(userDB).filter(userDB.username == user.username).first():
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="user is already taken")
 
     new_user = userDB(**user.model_dump())
     new_user.password=_hash_password(user.password)
