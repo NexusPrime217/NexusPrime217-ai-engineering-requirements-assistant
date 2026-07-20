@@ -12,7 +12,7 @@ connection_url=URL.create(
     host=setting.DB_HOST,
     port=setting.DB_PORT,
     database=setting.DB_NAME
-
 )
+
 engine = create_engine(connection_url,echo=True)
 session = sessionmaker(bind = engine, autoflush = False, autocommit = False)
