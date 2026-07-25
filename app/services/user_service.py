@@ -1,9 +1,17 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.model.user import User as userDB
 from app.schemas import UserResponse
 from app.schemas.user import UserUpdate
+from app.database.database import get_db
 
+
+def get_users(db:Session):
+    return db.query(userDB).all()
+
+def get_user_by_id(user_id : int,
+                   db:Session):
+    return db.get(userDB, user_id)
 
 def update_user(user_id:int, user:UserUpdate, db:Session):
     db_user = db.query(userDB).filter(userDB.id == user_id).first()
@@ -49,3 +57,5 @@ def delete_user(user_id, db):
     db.commit()
 
     return "User deleted"
+
+
