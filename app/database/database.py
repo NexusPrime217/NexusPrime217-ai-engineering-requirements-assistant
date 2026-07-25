@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine,URL
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from app.core.config import setting
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -13,6 +13,13 @@ connection_url=URL.create(
     port=setting.DB_PORT,
     database=setting.DB_NAME
 )
+
+def get_db() -> Session:
+    db=session()
+    try:
+        yield db
+    finally:
+        db.close()
 
 engine = create_engine(connection_url,echo=True)
 session = sessionmaker(bind = engine, autoflush = False, autocommit = False)
