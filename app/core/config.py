@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     # SECRETKEY: str
     JWT_ALG:str
     ACCESS_TOKEN_EXPIRE_MINUTES:int
-
+    DOCUMENT_PATH:str
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding='utf-8')
 
 setting = Settings()

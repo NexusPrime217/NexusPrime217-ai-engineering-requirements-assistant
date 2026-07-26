@@ -3,6 +3,7 @@ from app.core.config import Settings
 from app.database.database import  engine, Base
 from app.api import user
 from app.api import auth
+from app.api import document
 
 import os
 
@@ -23,6 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(user.router)
 app.include_router(auth.router)
+app.include_router(document.router)
 
 @app.get("/")
 def home_page():
