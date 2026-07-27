@@ -7,7 +7,8 @@ from app.core.dependencies import get_current_user
 from app.model import user as userDB
 from app.schemas.document import DocumentResponse
 from app.services import document_service
-
+from app.schemas.search import SearchRequest
+from app.services import search_service
 import logging
 
 logger = logging.getLogger(__name__)
@@ -49,3 +50,14 @@ async def upload_document(
     #     "content_type": file.content_type,
     #     "size": len(contents)
     # }
+
+@router.post("/search")
+def search_in_file(
+        request : SearchRequest,
+        user : userDB = Depends(get_current_user)
+):
+    return search_service.semantic_search(
+        request.query,
+        user.id,
+        1
+    )

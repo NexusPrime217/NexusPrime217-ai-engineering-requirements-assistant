@@ -1,10 +1,4 @@
-from enum import nonmember
-
 import chromadb
-from onnxruntime.tools.offline_tuning import embed
-from sqlalchemy.engine.result import null_result
-from torch.ao.quantization.backend_config.onednn import embedding_op_dtype_configs
-
 from app.rag.embedding_service import generate_embeddings
 client = chromadb.PersistentClient(
     path="../storage/chroma"
@@ -65,6 +59,18 @@ def delete_document_chunks(
 ):
     collection.delete(
         where={"document_id":document_id}
+    )
+
+def search_chunks(
+        query_embedding : list[float],
+        user_id : int,
+        limit : int = 5
+):
+    return collection.query(
+        query_embeddings = [query_embedding],
+        n_results = limit,
+        where = {"user_id":user_id},
+        include=["documents", "metadatas", "distances"]
     )
 
 
