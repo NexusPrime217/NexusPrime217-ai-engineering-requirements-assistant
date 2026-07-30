@@ -8,8 +8,13 @@ def semantic_search(
         limit:int=5
 ):
     query_embedding = generate_embeddings([query])[0]
-    return search_chunks(
+    results = search_chunks(
         query_embedding,
         user_id,
-        limit)
+        limit
+    )
 
+    if not results["documents"] or not results["documents"][0]:
+        return []
+
+    return results["documents"][0]

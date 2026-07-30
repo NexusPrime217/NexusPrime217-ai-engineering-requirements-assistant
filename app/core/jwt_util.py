@@ -1,6 +1,6 @@
 import jwt
 from fastapi import HTTPException
-# from app.core.config import setting
+from app.core.config import setting
 import logging
 
 logger = logging.getLogger(__name__)
@@ -13,10 +13,8 @@ def create_access_token(payload : dict)->str:
 
     access_token = jwt.encode(
         payload,
-        "asgbiawbwbebwiaincubeiwbcwcwbegbwgbwfdoa9fhwf3874tg83rdr991bgf7g29f2bf92983gft972fc92wd23bf",
-        algorithm="HS256"
-        # setting.SECRETKEY,
-        # algorithm=setting.JWT_ALG,
+        setting.SECRET_KEY,
+        algorithm=setting.JWT_ALG
     )
     return access_token
 
@@ -24,8 +22,8 @@ def create_access_token(payload : dict)->str:
 def decode_access_token(access_token:str):
     try:
         return jwt.decode(access_token,
-                  "asgbiawbwbebwiaincubeiwbcwcwbegbwgbwfdoa9fhwf3874tg83rdr991bgf7g29f2bf92983gft972fc92wd23bf",
-                  algorithms=["HS256"])
+                  setting.SECRET_KEY,
+                  algorithms=[setting.JWT_ALG])
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401,
                             detail="Token has expired")

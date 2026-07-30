@@ -11,6 +11,8 @@ from app.schemas.search import SearchRequest
 from app.services import search_service
 import logging
 
+from app.services.rag_service import answer_question
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
@@ -56,8 +58,11 @@ def search_in_file(
         request : SearchRequest,
         user : userDB = Depends(get_current_user)
 ):
-    return search_service.semantic_search(
+    answer = answer_question(
         request.query,
-        user.id,
-        1
+        user.id
     )
+
+    return {
+        "answer": answer
+    }
